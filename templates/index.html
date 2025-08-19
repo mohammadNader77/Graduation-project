@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YouTube Video Trend Prediction</title>
+  <link href="/static/styles.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">🎬 YouTube Predictions</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" onclick="showSection('overview')" class="nav-link active">📊 Overview</a></li>
+        <li><a href="#" onclick="showSection('analytics')" class="nav-link">📈 Analytics</a></li>
+        <li><a href="#" onclick="showSection('predictor')" class="nav-link">🔮 Predictor</a></li>
+        <li><a href="#" onclick="showSection('insights')" class="nav-link">💡 Insights</a></li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <h1 class="hero-title">Predict Trending Videos In YouTube</h1>
+    </div>
+
+    <!-- Overview Section -->
+    <div id="overview" class="content-section active">
+      <div class="hero-section">
+      <p class="hero-subtitle">Overview of YouTube Trend Prediction Model: Dataset, Accuracy, and Key Parameters</p>
+    </div>
+      <div class="stats-overview">
+        <div class="stat-card">
+          <h3>Dataset Videos</h3>
+          <div class="stat-value">380K+</div>
+          <div class="stat-desc">Training samples</div>
+        </div>
+        <div class="stat-card">
+          <h3>Model Accuracy</h3>
+          <div class="stat-value">80%</div>
+          <div class="stat-desc">Prediction accuracy</div>
+        </div>
+        <div class="stat-card">
+          <h3>Trend Window</h3>
+          <div class="stat-value">30 Days</div>
+          <div class="stat-desc">Analysis period</div>
+        </div>
+        <div class="stat-card">
+          <h3>Key Features</h3>
+          <div class="stat-value">5</div>
+          <div class="stat-desc">Selected variables</div>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <!-- Analytics Section -->
+    <div id="analytics" class="content-section">
+      <div class="hero-section">
+      <p class="hero-subtitle">Analyzing YouTube Trends: Key Factors for Video Success</p>
+    </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>📊 Category Distribution & Performance</h3>
+          <div class="chart-container">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>⏰ Optimal Publishing Hours</h3>
+          <div class="chart-container">
+            <canvas id="timeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>📈 Days to Trend Distribution</h3>
+          <div class="chart-container">
+            <canvas id="daysChart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>📅 Weekly Trending Patterns</h3>
+          <div class="chart-container">
+            <canvas id="weekdayChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictor Section -->
+    <div id="predictor" class="content-section">
+    <div class="hero-section">
+      <p class="hero-subtitle">Predict YouTube Video Trending Potential: URL or Manual Input</p>
+    </div>
+      <div class="prediction-form">
+        <form action="/predict" method="POST" id="predictForm" autocomplete="off">
+          <div class="method-selector">
+            <input type="radio" id="method_url" name="method" value="url" checked />
+            <label for="method_url">🔗 YouTube URL</label>
+
+            <input type="radio" id="method_manual" name="method" value="manual" />
+            <label for="method_manual">✍️ Manual Input</label>
+          </div>
+
+          <div id="url_field">
+            <div class="form-group">
+              <label for="video_url">🔎 Enter YouTube Video URL:</label>
+              <input type="url" id="video_url" name="video_url" placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX" />
+            </div>
+          </div>
+
+          <div id="manual_fields" style="display:none;">
+            <div class="form-group">
+              <label for="views">👁️ Number of Views:</label>
+              <input type="number" id="views" name="views" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label for="likes">👍 Number of Likes:</label>
+              <input type="number" id="likes" name="likes" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label for="comment_count">💬 Number of Comments:</label>
+              <input type="number" id="comment_count" name="comment_count" min="0" />
+            </div>
+
+            <div class="form-group">
+              <label for="title">📝 Video Title:</label>
+              <input type="text" id="title" name="title" />
+            </div>
+
+            <div class="form-group">
+              <label for="category_encoded">📂 Category:</label>
+              <select id="category_encoded" name="category_encoded">
+                <option value="1">Film & Animation</option>
+                <option value="2">Autos & Vehicles</option>
+                <option value="10">Music</option>
+                <option value="15">Pets & Animals</option>
+                <option value="17">Sports</option>
+                <option value="19">Travel & Events</option>
+                <option value="20">Gaming</option>
+                <option value="22">People & Blogs</option>
+                <option value="23">Comedy</option>
+                <option value="24">Entertainment</option>
+                <option value="25">News & Politics</option>
+                <option value="26">Howto & Style</option>
+                <option value="27">Education</option>
+                <option value="28">Science & Technology</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="publish_date">📅 Publish Date:</label>
+              <input type="date" id="publish_date" name="publish_date" />
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">🚀 Predict Trending Potential</button>
+        </form>
+      </div>
+      <!-- <div class="chart-card" style="background: rgba(255, 255, 255, 0.95); padding: 30px; border-radius: 25px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); margin-top: 40px; display: grid; gap: 25px;"> -->
+<!-- Results Section -->
+ <div>
+<h2 style="color: #FF0000; text-align: center; font-size: 2.5rem; margin-bottom: 15px; padding: 50px; border-radius: 30px; background: white; backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); max-width: 900px; margin: 40px auto; position: relative; overflow: hidden; animation: fadeInUp 0.8s ease-out, pulse 2s infinite alternate;">
+  🎯 Prediction Result: {{ result }}
+</h2>
+</div>
+
+{% if video_info %}
+<div style="background: white; backdrop-filter: blur(15px); border-radius: 30px; padding: 50px; margin: 40px auto; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); max-width: 900px; position: relative; overflow: hidden; animation: fadeInUp 0.8s ease-out;">
+    <h3 style="color: #e74c3c; text-align: center; margin-bottom: 30px; font-size: 28px; font-weight: 700; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); letter-spacing: 1px; animation: slideInDown 0.6s ease-out;">📹 Video Information</h3>
+    <ul style="background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.2)); border-radius: 20px; padding: 35px; margin: 0; list-style: none; border: 1px solid rgba(46, 204, 113, 0.3); box-shadow: inset 0 2px 10px rgba(46, 204, 113, 0.1); animation: fadeIn 1s ease-out;">
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.1s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Title:</strong> {{ video_info.title }}</li>
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.2s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Views:</strong> {{ '{:,}'.format(video_info.views) }}</li>
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.3s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Likes:</strong> {{ '{:,}'.format(video_info.likes) }}</li>
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.4s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Comments:</strong> {{ '{:,}'.format(video_info.comment_count) }}</li>
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.5s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Publish Date:</strong> {{ video_info.publish_date }}</li>
+      {% set category_map = {
+        1: "Film & Animation", 2: "Autos & Vehicles", 10: "Music", 15: "Pets & Animals",
+        17: "Sports", 18: "Short Movies", 19: "Travel & Events", 20: "Gaming",
+        21: "Videoblogging", 22: "People & Blogs", 23: "Comedy", 24: "Entertainment",
+        25: "News & Politics", 26: "Howto & Style", 27: "Education", 28: "Science & Technology",
+        29: "Nonprofits & Activism", 30: "Movies", 31: "Anime/Animation", 32: "Action/Adventure",
+        33: "Classics", 35: "Documentary", 36: "Drama", 37: "Family", 38: "Foreign",
+        39: "Horror", 40: "Sci-Fi/Fantasy", 41: "Thriller", 42: "Shorts", 43: "Shows", 44: "Trailers"
+      } %}
+      <li style="margin-bottom: 16px; padding: 16px 24px; background: rgba(255, 255, 255, 0.1); border-radius: 12px; border-left: 4px solid #3498db; transition: all 0.3s ease; backdrop-filter: blur(5px); animation: slideInLeft 0.8s ease-out; animation-delay: 0.6s; animation-fill-mode: both;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateX(5px)'; this.style.boxShadow='0 4px 15px rgba(52, 152, 219, 0.2)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateX(0)'; this.style.boxShadow='none';"><strong style="color: #2c3e50; font-weight: 600; margin-right: 8px; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px;">Category:</strong> {{ category_map.get(video_info.category_id, video_info.category_id) }}</li>
+    </ul>
+  </div>
+{% endif %}
+</div>
+    </div>
+
+    <!-- Insights Section -->
+    <div id="insights" class="content-section">
+      <div class="hero-section">
+      <p class="hero-subtitle">Predict YouTube Video Trending Potential: URL or Manual Input</p>
+    </div>
+      <div class="insights-grid">
+        <div class="insight-card">
+          <h4>🤖 ML Algorithm</h4>
+          <p><strong>Random Forest</strong> classifier with 100 estimators, max depth 10, and balanced class weights for optimal performance</p>
+        </div>
+        <div class="insight-card">
+          <h4>📊 Feature Engineering</h4>
+          <p>We used <strong>SelectKBest</strong> with f_classif scoring to identify the 5 most predictive features from the dataset</p>
+        </div>
+        <div class="insight-card">
+          <h4>⏱️ Prediction Window</h4>
+          <p>Analyzes videos uploaded <strong>within 30 days</strong> and predicts trending success for a 30-day period</p>
+        </div>
+        <div class="insight-card">
+          <h4>🎯 Target Definition</h4>
+          <p>Success defined as trending <strong>within 30 days</strong> of upload based on engagement metrics</p>
+        </div>
+        <div class="insight-card">
+          <h4>🔧 Core Features</h4>
+          <p><strong>Views, Likes, Comments, Publish Time</strong> plus engineered features like engagement rates</p>
+        </div>
+        <div class="insight-card">
+          <h4>📈 Model Validation</h4>
+          <p>We Used <strong>stratified sampling</strong> and cross-validation to ensure robust and reliable predictions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="/static/script.js"></script>
+  
+</body>
+</html>
